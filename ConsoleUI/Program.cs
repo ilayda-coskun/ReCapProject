@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using System;
 
@@ -8,7 +9,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
 
             Console.WriteLine("---------KİRALIK ARABA LİSTESİ---------\n");
 
@@ -17,8 +20,11 @@ namespace ConsoleUI
                 Console.WriteLine( " Arabanın Modeli : " + car.Description + 
                     "\n Arabanın Üretim Yılı :  " + car.ModelYear + 
                     "\n Ararabanın Günlük Kira Fiyatı :  " + car.DailyPrice +
+                    "\n Ararabanın Renk Id'si :  " + car.ColorId +
+                    "\n Ararabanın Marka Id'si :  " + car.BrandId +
                     "\n----------------------------------------");
             }
+
         }
     }
 }
