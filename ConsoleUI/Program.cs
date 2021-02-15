@@ -21,7 +21,7 @@ namespace ConsoleUI
                     "\n Arabanın Üretim Yılı :  " + car.ModelYear + 
                     "\n Ararabanın Günlük Kira Fiyatı :  " + car.DailyPrice +
                     "\n Ararabanın Renk Id'si :  " + car.ColorId +
-                    "\n Ararabanın Marka Id'si :  " + car.BrandId +
+                    "\n    Ararabanın Marka Id'si :  " + car.BrandId +
                     "\n----------------------------------------");
             }
 
