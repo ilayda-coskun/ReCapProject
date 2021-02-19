@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -14,48 +16,53 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public void Add(Brand brand)
+
+        public IResult Add(Brand brand)
         {
-            if (brand.BrandName.Length >= 2 )
+            if (brand.BrandName.Length < 2)
             {
-                _brandDal.Add(brand);
-                Console.WriteLine("Marka ismi eklenmiştir.");
+                return new ErrorResult(Messages.BrandNameInvalid);
             }
-            else
-            {
-                Console.WriteLine("Marka adı 2 harften küçük olamaz.");
-            }
+            _brandDal.Add(brand);
+            return new SuccessResult(Messages.BrandAdded);
         }
 
-        public void Delete(Brand brand)
+        public IResult Delete(Brand brand)
         {
             try
             {
                 _brandDal.Delete(brand);
-                Console.WriteLine("Marka silinmiştir.");
+                return new SuccessResult(Messages.BrandDeleted);
             }
             catch (Exception)
             {
-                Console.WriteLine("Böyle bir marka bulunmamaktadır.");
+                return new ErrorResult(Messages.BrandNotExist);
             }
+            
         }
 
-        public List<Brand> GetAll()
-        {
-            return _brandDal.GetAll();
-        }
-
-        public void Update(Brand brand)
+        public IResult Update(Brand brand)
         {
             if (brand.BrandName.Length >= 2)
             {
-                _brandDal.Update(brand);
-                Console.WriteLine("Marka ismi güncellenmiştir.");
+                return new ErrorResult(Messages.BrandNameInvalid);
             }
-            else
+            _brandDal.Update(brand);
+            return new SuccessResult(Messages.BrandUpdated);
+        }
+
+        public IDataResult<List<Brand>> GetAll()
+        {
+            if (DateTime.Now.Hour == 21)
             {
-                Console.WriteLine("Marka adı 2 harften küçük olamaz.");
+                return new ErrorDataResult<List<Brand>>(Messages.MaintenanceTime);
             }
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandDataListed);
+        }
+
+        public IDataResult<Brand> GetById(int brandId)
+        {
+            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.Id == brandId));
         }
     }
 }
