@@ -35,9 +35,6 @@ namespace ConsoleUI
                 Console.WriteLine(result.Message);
             }
 
-            
-
-
         }
 
         /*private static void CarData(CarManager carManager)
